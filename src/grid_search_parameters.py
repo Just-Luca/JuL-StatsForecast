@@ -1,0 +1,72 @@
+
+# from src.hup_neuralmacrocast import process_data
+from statsforecast.models import (
+    
+    HoltWinters,
+    CrostonClassic as Croston, 
+    HistoricAverage,
+    DynamicOptimizedTheta as DOT,
+    SeasonalNaive,
+    Naive,
+    ARIMA,
+    AutoETS,
+    AutoARIMA,
+    GARCH
+)
+
+HORIZONS = [
+    # 20, 
+    # 10,
+    7,
+    # 2
+]
+
+LB_DAYS = 6 * 20   # (years * months * days)
+# LB_DAYS = 2 * 12 * 20   # (years * months * days)
+
+TRANSFORMATIONS = [
+    # "log", 
+    # "root3", 
+    # "outl+log", 
+    # "outl+root3", 
+    # "outl", 
+    "identity"
+]
+
+MODELS = [
+    # HoltWinters(), # lui non runna, fullbacka sul modello di fullback
+    # Croston(),
+    # SeasonalNaive(season_length=7, alias="SeasNaive_sl7"),
+    # HistoricAverage(),
+    # DOT(season_length=1 , alias = 'DOT_sl1'),
+    # DOT(season_length=7 , alias = 'DOT_sl7'),
+    # Naive(),
+    # ARIMA((3,1,5)),
+    AutoARIMA(seasonal = False),
+    # AutoETS(model='AZN'),
+    # GARCH(1,1),
+    # GARCH(2,1),
+    # GARCH(2,2)
+]
+
+# n_series = 16
+
+# HIDDEN_SIZE = 25
+# RANDOM_SEED = 42
+# BATCH_SIZE = 4
+
+# def get_model_config(lb_days, horizon):
+    
+#     return{
+#         "input_size": lb_days,
+#         "batch_size": BATCH_SIZE,
+#         "h": horizon,
+#         # "loss": DistributionLoss(distribution="StudentT", level=[80, 90]),
+#         "loss": MAE(),
+#         "learning_rate": 1e-3,
+#         # "val_check_steps": 10,
+#         "scaler_type": "robust",
+#         "random_seed": RANDOM_SEED,
+#         "deterministic": "warn",
+#         "start_padding_enabled": True,
+#     }
