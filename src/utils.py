@@ -246,8 +246,8 @@ def get_n_windows(
         horizon: int
     ):
 
-    return int((data_frame.groupby('unique_id').size().min() - gsp.LB_DAYS) / horizon - .1)
-
+    # return int((data_frame.groupby('unique_id').size().min() - gsp.LB_DAYS) / horizon - .1)
+    return 3
 
 def accuracy_metrics(
         df: pd.DataFrame, 
