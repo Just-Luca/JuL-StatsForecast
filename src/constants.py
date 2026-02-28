@@ -8,7 +8,7 @@ DATA_PATH = Path.cwd().parent / "StatsForecast" / "data" / "ETTh.csv"
 # DATA_PATH = Path.cwd().parent / "StatsForecast" / "data" / "volatility_Europe_garch_1_1.csv"
 
 EVAL_HORIZONS = [
-    28, 
+    24, 
     # 7, 
     # 1
 ]

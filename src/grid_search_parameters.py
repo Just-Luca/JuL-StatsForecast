@@ -17,11 +17,12 @@ from statsforecast.models import (
 HORIZONS = [
     # 20, 
     # 10,
-    7,
+    24,
     # 2
 ]
 
-LB_DAYS = 6 * 20   # (years * months * days)
+# @TODO: lb_days and horizons should be calculated automatically
+LB_DAYS = 1* 12 * 20 * 24   # (years * months * days * hours)
 # LB_DAYS = 2 * 12 * 20   # (years * months * days)
 
 TRANSFORMATIONS = [
