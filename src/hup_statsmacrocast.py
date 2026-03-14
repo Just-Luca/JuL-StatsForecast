@@ -21,7 +21,7 @@ import pandas as pd
 
 os.environ.setdefault("NIXTLA_ID_AS_COL", "1")
 
-
+# LabForecast could be the right name?
 class HupStatsMacrocast:
 
     def __init__(

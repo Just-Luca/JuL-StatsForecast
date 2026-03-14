@@ -13,6 +13,7 @@ EVAL_HORIZONS = [
     # 1
 ]
 
+# @TODO: capire esattamente la dimensione della parte di test, e se è possibile calcolarla automaticamente a partire dalla frequenza del dataset
 # size of test df (and forecast) in months
 TEST_SIZE = 1
 
@@ -21,6 +22,7 @@ valid_metrics = ['mae', 'mape', 'rmse', 'smape', "norm_mae"]
 LOW_QUANTILE = 0.025
 UP_QUANTILE = 0.975
 
+# @TODO: add more models (ARIMA_sl24, AutoARIMA_sl24, AutoETS, AutoETS_sl24)
 COLORS = {
     'HoltWinters': '#98df8a', 
     'Croston': '#ff7f0e', 
