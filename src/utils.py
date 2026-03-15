@@ -184,7 +184,7 @@ def process_data(
     ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
 
     """
-    Loads and processes the data and returns the correct dataframe ready for training
+    Loads and processes data and returns the correct dataframe ready for training
     """
 
     df = _load_data()

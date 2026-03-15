@@ -531,7 +531,7 @@ class HupStatsMacrocast:
         df[date_column] = pd.to_datetime(df[date_column])
         days_offset = eval_horizon
 
-        return df[date_column].iloc[0] - timedelta(days=days_offset) # @TODO: this offset should be in hours, not days 
+        return df[date_column].iloc[0] - timedelta(days=days_offset) # @TODO: this offset should probably be in hours, not days 
 
 
     def _end_date(self, df: pd.DataFrame, date_column: str='ds'):
@@ -551,7 +551,7 @@ class HupStatsMacrocast:
         df[date_column] = pd.to_datetime(df[date_column])
         days_offset = eval_horizon*15
 
-        return df[date_column].max() - timedelta(days=days_offset) # @TODO: this offset should be in hours, not days 
+        return df[date_column].max() - timedelta(days=days_offset) # @TODO: this offset should be probably in hours, not days 
 
 
     def _apply_plot_style(self, style_dict):
@@ -608,7 +608,7 @@ class HupStatsMacrocast:
         n_rows = math.ceil(n_plots / n_cols)  
 
         fig, axes = plt.subplots(n_rows, n_cols, figsize=(15 * n_cols, 7 * n_rows), squeeze=False)
-        fig.suptitle("Forecast Volatility Plot", fontsize=55)
+        fig.suptitle("Forecast Plot", fontsize=55) # @TODO: the title should be "Forecast {data title} Plot"
 
         # Flatten the axes array for easier iteration
         axes = axes.flatten() 
