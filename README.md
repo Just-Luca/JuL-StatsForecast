@@ -81,7 +81,7 @@ StatsForecastLab/
 
 **`grid_search_parameters.py`** — Specifies the search space for experimentation: which models to evaluate, which parameter combinations to test, and which transformations to apply.
 
-**`hup_statsmacrocast.py`** — Houses the primary `StatsForecastLab` class. Exposes the core API: `predict`, `cross_validate`, `plot`, and `summary`.
+**`statsforecastlab.py`** — Houses the primary `StatsForecastLab` class. Exposes the core API: `predict`, `cross_validate`, `plot`, and `summary`.
 
 **`utils.py`** — Helper functions for metric computation, result aggregation, and visualization. Designed to be imported independently when needed.
 
@@ -97,7 +97,7 @@ StatsForecastLab/
 ### Install from source
 
 ```bash
-git clone https://github.com/your-org/StatsForecastLab.git
+git clone https://github.com/Just-Luca/StatsForecastLab.git
 cd StatsForecastLab
 pip install -r requirements.txt
 ```
@@ -116,7 +116,7 @@ pip install statsforecast pandas numpy matplotlib
 
 ```python
 import pandas as pd
-from src.hup_statsmacrocast import StatsForecastLab
+from src.statsforecastlab import StatsForecastLab
 
 # Load a long-format time series dataset
 df = pd.read_csv("data/my_series.csv")
@@ -127,11 +127,11 @@ lab = StatsForecastLab(
     df=df,
     freq="M",          # Monthly frequency
     horizon=12,        # Forecast 12 periods ahead
-    metric="MAE"       # Optimization target
+    metric="mae"       # Optimization target
 )
 
 # Run cross-validation grid search
-lab.cross_validate()
+lab.cross_validation()
 
 # Inspect model comparison summary
 lab.summary()
@@ -140,7 +140,7 @@ lab.summary()
 forecast = lab.predict()
 
 # Visualize results
-lab.plot()
+lab.best_results_plots()
 ```
 
 ---
