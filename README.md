@@ -69,9 +69,9 @@ StatsForecastLab/
 ├── src/
 │   ├── constants.py                # Global constants: horizons, frequencies, metric targets
 │   ├── grid_search_parameters.py   # Model configurations and transformation grid definitions
-│   ├── hup_statsmacrocast.py       # Core StatsForecastLab class and pipeline orchestration
+│   ├── statsforecastlab.py       # Core StatsForecastLab class and pipeline orchestration
 │   └── utils.py                    # Evaluation utilities, metric aggregation, plotting helpers
-├── test_statsmacrocast.ipynb       # End-to-end experiment walkthrough notebook
+├── test_statsforecastlab.ipynb       # End-to-end experiment walkthrough notebook
 └── README.md
 ```
 
