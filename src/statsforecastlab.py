@@ -22,7 +22,7 @@ import pandas as pd
 os.environ.setdefault("NIXTLA_ID_AS_COL", "1")
 
 # LabStatsForecast could be the right name?
-class LabStatsForecast:
+class StatsForecastLab:
 
     def __init__(
             self,
@@ -383,7 +383,7 @@ class LabStatsForecast:
     def best_results_prediction_dataframe(
             self,
             horizon: int = gsp.HORIZONS[0],
-            metric: str = "mape",
+            metric: str = "mae",
             result: str ="forecast", 
             unique_ids=None
         ):
