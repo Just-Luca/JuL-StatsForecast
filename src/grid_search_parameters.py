@@ -20,7 +20,7 @@ HORIZONS = [
 ]
 
 # @TODO: lb_days and horizons should be calculated automatically
-LB_DAYS = 1* 12 * 20 * 24   # (years * months * days * hours)
+LB_DAYS = 1* 12 * 20 * 24   # (years * months * days * hours) # @TODO: forse it is too much
 # LB_DAYS = 2 * 12 * 20   # (years * months * days)
 
 TRANSFORMATIONS = [

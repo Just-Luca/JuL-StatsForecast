@@ -240,7 +240,7 @@ def id_control(inserted_id):
     
     return ids
 
-
+# n_windows * horizon = quanto la cross validation va nel passato (3 * 72 = 216 ore, cioè 9 giorni)
 def get_n_windows(
         data_frame: pd.DataFrame,
         horizon: int
