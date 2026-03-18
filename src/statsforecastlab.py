@@ -393,7 +393,7 @@ class StatsForecastLab:
         )
 
         best_results = metric_best_results_df.set_index('unique_id').drop(columns=['metric', 'metric_value']).to_dict('index')
-        
+        # @TODO: if result is forecast, we should just plot the best model, not doing all these things
         if result == 'forecast':
 
             forecast_results_df = pd.DataFrame()
