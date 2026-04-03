@@ -39,6 +39,7 @@ class StatsForecastLab:
         self.models = models
         self.normalization = normalization
         self.test = test
+        
 
     def predict(self):
 
@@ -242,7 +243,7 @@ class StatsForecastLab:
                 metric_results_path = cross_metric_results_path
                 df_crossval = pd.read_csv(cv_results_path)
                 if Path.exists(metric_results_path):   
-                        continue
+                    continue
 
                 evaluation_df = utils.accuracy_metrics(
                     df_crossval,
