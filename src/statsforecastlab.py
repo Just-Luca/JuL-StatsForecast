@@ -40,6 +40,72 @@ class StatsForecastLab:
         self.normalization = normalization
         self.test = test
         
+        
+    def predict_best(self, df_cv_results: pd.DataFrame, output_path: str | Path) -> None:
+        """
+        Given crossvalidation results (metric, unique_id, metric_value, best_model, transformation),
+        trains and predicts each unique_id using its best model+transformation combo.
+        Groups series that share the same (best_model, transformation) to train together,
+        minimizing the number of sf.fit() calls.
+        Saves the final concatenated forecast DataFrame to disk.
+
+        Args:
+            df_cv_results:  DataFrame with columns [metric, unique_id, metric_value,
+                            best_model, transformation] — one row per unique_id.
+            output_path:    Path where the final forecast CSV will be saved.
+        """
+        output_path = Path(output_path)
+        forecast_fragments: list[pd.DataFrame] = []
+
+        # --- Group by (best_model, transformation) to batch training calls ---
+        # Series sharing the same combo can be fit in a single sf.fit() call.
+        groups = df_cv_results.groupby(["best_model", "transformation"], sort=False)
+
+        for (best_model, transformation), group_df in groups:
+
+            unique_ids_in_group = group_df["unique_id"].tolist()
+
+            # Resolve the model object matching best_model name
+            model_obj = next(
+                (m for m in self.models if type(m).__name__ == best_model), None
+            )
+            if model_obj is None:
+                raise ValueError(
+                    f"Model '{best_model}' found in CV results but not in self.models. "
+                    f"Available: {[type(m).__name__ for m in self.models]}"
+                )
+
+            # _train_loop loads ALL series — we use the first horizon (or adapt as needed)
+            # and the matched transformation + model to get df_train, sf, and the horizon
+            horizon = self.horizons[0]  # adjust if horizon is also stored in cv results
+
+            df_train, _, _, sf, _ = self._train_loop(
+                horizon=horizon,
+                transformation=transformation,
+                model=model_obj,
+            )
+
+            # Filter df_train to only the series in this group before fitting.
+            # StatsForecast respects unique_id — fitting on a subset is valid.
+            df_train_group = df_train[df_train["unique_id"].isin(unique_ids_in_group)]
+
+            sf.fit(df=df_train_group)
+            df_fore = sf.predict(h=horizon)
+
+            # Apply inverse transformation and keep only this group's unique_ids
+            df_fore_inv = (
+                utils.apply_inverse_transformation_to_dataframe(df_fore, transformation)
+                .assign(ds=lambda x: pd.to_datetime(x["ds"]))
+                .loc[lambda x: x["unique_id"].isin(unique_ids_in_group)]
+            )
+
+            forecast_fragments.append(df_fore_inv)
+
+        # --- Combine all fragments and save ---
+        df_final = pd.concat(forecast_fragments, ignore_index=True)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        df_final.to_csv(output_path, index=False, encoding="utf-8")
+
 
     def predict(self):
 
@@ -165,9 +231,9 @@ class StatsForecastLab:
         else:
             pass
         
-        @TODO: probabilmente nella definizione della classe sarebbe opportuno inserire un parametro bool chiamato "test"; if true tutto rimane com'è, e la cross validation rimane un po' ridondante; if false allora bisogna modificare anche process data, perché non ha senso testare prediction() su dati passati
-        se result == 'forecast' and df_crossval = empty allora plot solo forecast (senza calcolo metriche)
-        se invece df_crossval != empty plot del best forecast
+        # @TODO: probabilmente nella definizione della classe sarebbe opportuno inserire un parametro bool chiamato "test"; if true tutto rimane com'è, e la cross validation rimane un po' ridondante; if false allora bisogna modificare anche process data, perché non ha senso testare prediction() su dati passati
+        # se result == 'forecast' and df_crossval = empty allora plot solo forecast (senza calcolo metriche)
+        # se invece df_crossval != empty plot del best forecast
 
         # crossvalidation (cv) is needed to decide which model is the best. 
         # but, if there is only one model, then cv is kinda useless.
@@ -206,7 +272,7 @@ class StatsForecastLab:
 
     def best_model_metric_evaluation(
             self,
-            result: str = "forecast", 
+            result: str = "crossval", 
         ):
         
         for horizon, transformation in itertools.product(
@@ -272,7 +338,7 @@ class StatsForecastLab:
             self,
             horizon: int = gsp.HORIZONS[0],
             metric: str = "mae",
-            result: str = "forecast",
+            result: str = "crossval",
             unique_ids=None
         ):
 
@@ -329,7 +395,7 @@ class StatsForecastLab:
     def best_results_summary(
             self,
             metric: str = "mae",
-            result: str = "forecast"
+            result: str = "crossval"
         ):
 
         self.best_model_metric_evaluation(result=result)
@@ -386,7 +452,7 @@ class StatsForecastLab:
             self,
             horizon: int = gsp.HORIZONS[0],
             metric: str = "mae",
-            result: str ="forecast", 
+            result: str ="crossval", 
             unique_ids=None
         ):
 

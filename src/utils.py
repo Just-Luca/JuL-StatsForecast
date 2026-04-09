@@ -11,7 +11,7 @@ import pandas as pd
 
 os.environ.setdefault("NIXTLA_ID_AS_COL", "1")
 
-
+# @TODO: i can move this function into the class directly, and then add a my_lab.py file containing all the pipeline (def main()...)
 def create_folder_structure():
     cnsts.CSV_FOLDER.mkdir(parents=True, exist_ok=True)
 
