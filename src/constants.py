@@ -2,7 +2,8 @@
 from pathlib import Path
 
 parent_folder = Path.cwd().parent  
-CSV_FOLDER = Path.cwd().parent / "StatsForecast" / "results_norm"  
+CSV_FOLDER = Path.cwd().parent / "StatsForecast" / "results"  
+CSV_FOLDER_NORM = Path.cwd().parent / "StatsForecast" / "results_norm"  
 # SRC = Path.cwd().parent / "StatsForecast" / "data"
 DATA_PATH = Path.cwd().parent / "StatsForecast" / "data" / "ETTh.csv"
 # DATA_PATH = Path.cwd().parent / "StatsForecast" / "data" / "volatility_Europe_garch_1_1.csv"

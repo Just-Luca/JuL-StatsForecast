@@ -12,8 +12,17 @@ import pandas as pd
 os.environ.setdefault("NIXTLA_ID_AS_COL", "1")
 
 # @TODO: i can move this function into the class directly, and then add a my_lab.py file containing all the pipeline (def main()...)
+
+# def create_folder_structure(self):
+#     if self.normalization:
+#         cnsts.CSV_FOLDER_NORM.mkdir(parents=True, exist_ok=True)
+#       return cnsts.CSV_FOLDER_NORM
+#     else:
+#         cnsts.CSV_FOLDER.mkdir(parents=True, exist_ok=True)
+#       return cnsts.CSV_FOLDER
+
 def create_folder_structure():
-    cnsts.CSV_FOLDER.mkdir(parents=True, exist_ok=True)
+    cnsts.CSV_FOLDER_NORM.mkdir(parents=True, exist_ok=True)
 
 
 def create_output_folder_structure(
@@ -22,7 +31,7 @@ def create_output_folder_structure(
         n_windows: int
     ) -> Tuple[Path, Path, Path, Path]:
 
-    horizon_folder = cnsts.CSV_FOLDER / f"horizon={horizon}"
+    horizon_folder = cnsts.CSV_FOLDER_NORM / f"horizon={horizon}"
     horizon_folder.mkdir(parents=True, exist_ok=True)
 
     base_folder = horizon_folder / f"SF_container_{transformation}"

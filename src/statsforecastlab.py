@@ -41,7 +41,11 @@ class StatsForecastLab:
         self.test = test
         
         
-    def predict_best(self, df_cv_results: pd.DataFrame, output_path: str | Path) -> None:
+    def predict_best(
+            self,
+            horizon: int = gsp.HORIZONS[0],
+        ):
+
         """
         Given crossvalidation results (metric, unique_id, metric_value, best_model, transformation),
         trains and predicts each unique_id using its best model+transformation combo.
@@ -56,7 +60,12 @@ class StatsForecastLab:
         """
         output_path = Path(output_path)
         forecast_fragments: list[pd.DataFrame] = []
-
+        
+        df_cv_results = self.best_results_metric_dataframe(
+            horizon=horizon,
+            metric="mae",
+            result="crossval"
+        )
         # --- Group by (best_model, transformation) to batch training calls ---
         # Series sharing the same combo can be fit in a single sf.fit() call.
         groups = df_cv_results.groupby(["best_model", "transformation"], sort=False)
