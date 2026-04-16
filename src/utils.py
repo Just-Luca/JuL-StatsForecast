@@ -6,41 +6,7 @@ from src import grid_search_parameters as gsp
 from typing import Tuple
 
 import numpy as np
-import os
 import pandas as pd
-
-os.environ.setdefault("NIXTLA_ID_AS_COL", "1")
-
-
-def create_folder_structure():
-    cnsts.CSV_FOLDER.mkdir(parents=True, exist_ok=True)
-
-
-def create_output_folder_structure(
-        horizon: int, 
-        transformation: str, 
-        n_windows: int
-    ) -> Tuple[Path, Path, Path, Path]:
-
-    horizon_folder = cnsts.CSV_FOLDER / f"horizon={horizon}"
-    horizon_folder.mkdir(parents=True, exist_ok=True)
-
-    base_folder = horizon_folder / f"SF_container_{transformation}"
-    base_folder.mkdir(parents=True, exist_ok=True)
-
-    inner_folder = base_folder / f"stats_training"
-    inner_folder.mkdir(parents=True, exist_ok=True)
-
-    results_folder = inner_folder / f"stats_training_results_(nw={n_windows})"
-    results_folder.mkdir(parents=True, exist_ok=True)
-
-    fit_results_path = inner_folder / f"forecast_df.csv"
-    cv_results_path = results_folder / f"cv_df_(nw={n_windows}).csv"
-    
-    fore_metric_results_path = inner_folder / f"fore_metric_bm_df.csv"
-    cross_metric_results_path = results_folder / f"cross_metric_bm_df_(nw={n_windows}).csv"
-
-    return fit_results_path, cv_results_path, fore_metric_results_path, cross_metric_results_path
 
 
 def normalize_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -180,7 +146,8 @@ def _load_data():
 
 def process_data(
         transformation: str = "identity",
-        normalization: bool = False
+        normalization: bool = False,
+        test: bool = False
     ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
 
     """
@@ -200,14 +167,18 @@ def process_data(
 
     df_actual = apply_transformation_to_dataframe(df, transformation)
 
-    split_date = df["ds"].max() - pd.DateOffset(months=cnsts.TEST_SIZE)
+    if test:
+        split_date = df["ds"].max() - pd.DateOffset(months=cnsts.TEST_SIZE)
 
-    _df_train = df[df['ds'] < split_date].reset_index(drop=True)
+        _df_train = df[df['ds'] < split_date].reset_index(drop=True)
 
-    df_train = apply_transformation_to_dataframe(_df_train, transformation)
-    df_test = df[df['ds'] >= split_date].reset_index(drop=True)
+        df_train = apply_transformation_to_dataframe(_df_train, transformation)
+        df_test = df[df['ds'] >= split_date].reset_index(drop=True)
 
-    return df_actual, df_train, df_test
+        return df_actual, df_train, df_test
+    
+    else:
+        return df_actual, df_actual, df_actual
 
 
 def get_id():
@@ -240,7 +211,7 @@ def id_control(inserted_id):
     
     return ids
 
-
+# n_windows * horizon = quanto la cross validation va nel passato (3 * 72 = 216 ore, cioè 9 giorni)
 def get_n_windows(
         data_frame: pd.DataFrame,
         horizon: int
@@ -346,11 +317,4 @@ def calculate_mean_metrics(df_path: Path, metric: str = "mae"):
             raise ValueError(f"Invalid metric specified: {metric}. Choose from {cnsts.valid_metrics}.") 
     
 
-def main():
-    os.environ.setdefault("NIXTLA_ID_AS_COL", "1")
 
-    create_folder_structure()
-
-
-if __name__ == "__main__":
-    main()

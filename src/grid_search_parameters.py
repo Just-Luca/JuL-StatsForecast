@@ -15,12 +15,12 @@ from statsforecast.models import (
 
 HORIZONS = [
     72,
-    48,
-    24,
+    # 48,
+    # 24,
 ]
 
 # @TODO: lb_days and horizons should be calculated automatically
-LB_DAYS = 1* 12 * 20 * 24   # (years * months * days * hours)
+LB_DAYS = 1* 12 * 20 * 24   # (years * months * days * hours) # @TODO: forse it is too much
 # LB_DAYS = 2 * 12 * 20   # (years * months * days)
 
 TRANSFORMATIONS = [
@@ -33,7 +33,7 @@ TRANSFORMATIONS = [
 ]
 
 MODELS = [
-    # HoltWinters(), # lui non runna, fullbacka sul modello di fullback
+    # HoltWinters(), 
     # Croston(),
     # SeasonalNaive(season_length=7, alias="SeasNaive_sl7"),
     # HistoricAverage(),

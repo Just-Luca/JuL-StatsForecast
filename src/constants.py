@@ -2,20 +2,37 @@
 from pathlib import Path
 
 parent_folder = Path.cwd().parent  
-CSV_FOLDER = Path.cwd().parent / "StatsForecast" / "results_norm"  
-# SRC = Path.cwd().parent / "StatsForecast" / "data"
+
+CSV_FOLDER = Path.cwd().parent / "StatsForecast" / "results"  
+CSV_FOLDER_NORM = Path.cwd().parent / "StatsForecast" / "results_norm"  
+
 DATA_PATH = Path.cwd().parent / "StatsForecast" / "data" / "ETTh.csv"
-# DATA_PATH = Path.cwd().parent / "StatsForecast" / "data" / "volatility_Europe_garch_1_1.csv"
 
 DATA_NAME = "ETTh"  # @TODO: this should be automatically extracted from the DATA_PATH
 
 # just_cool_unique_ids
 JCUIds = ["HUFL", "HULL", "LUFL", "MUFL"]
 
+# (https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)
+FREQUENCIES = [
+    # 'B',    # business day frequency
+    # 'D',    # calendar day frequency
+    # 'W',    # weekly frequency
+    # 'M',    # monthly frequency
+    # 'Q',    # quarterly frequency
+    # 'Y',    # yearly frequency
+    'h',    # hourly frequency
+    # 'min',  # minutely frequency
+    # 's',    # secondly frequency
+    # 'ms',   # milliseconds
+    # 'us',   # microseconds
+    # 'ns',   # nanoseconds
+]
+
 EVAL_HORIZONS = [
-    24, 
+    # 24, 
     # 7, 
-    # 1
+    1
 ]
 
 # @TODO: capire esattamente la dimensione della parte di test, e se è possibile calcolarla automaticamente a partire dalla frequenza del dataset
@@ -27,7 +44,6 @@ valid_metrics = ['mae', 'mape', 'rmse', 'smape', "norm_mae"]
 LOW_QUANTILE = 0.025
 UP_QUANTILE = 0.975
 
-# @TODO: add more models (ARIMA_sl24, AutoARIMA_sl24, AutoETS, AutoETS_sl24)
 COLORS = {
     'HoltWinters': '#98df8a', 
     'Croston': '#ff7f0e', 
