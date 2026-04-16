@@ -1,6 +1,5 @@
 
 from src.statsforecastlab import StatsForecastLab
-from src import constants as cnsts 
 from tqdm import TqdmExperimentalWarning
 
 import os
