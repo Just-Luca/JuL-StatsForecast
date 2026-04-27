@@ -182,12 +182,12 @@ The primary interface to the framework. Instantiate with a dataset and configura
 
 ```python
 StatsForecastLab(
-    df: pd.DataFrame,       # Long-format time series (unique_id, ds, y)
-    freq: str,              # Pandas-compatible frequency string (e.g., "D", "W", "M")
-    horizon: int,           # Number of forecast steps
-    metric: str = "MAE",    # Evaluation metric for model selection
-    models: list = None,    # Override default model list (optional)
-    transformations: list = None  # Override default transformations (optional)
+    freq: str,              # Pandas-compatible frequency string (e.g., "h", "D", "W", "M")
+    horizons: list,         # List of numbers of forecast steps (horizon)
+    transformations: list,  # List of transformations
+    models: list,           # List of models
+    normalization: bool = False,
+    test: bool = False
 )
 ```
 
