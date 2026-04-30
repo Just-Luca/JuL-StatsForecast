@@ -826,8 +826,7 @@ class StatsForecastLab:
 
             min_date = df_crossval.query(f"unique_id == '{unique_id}'")["ds"].min()
             max_date = df_crossval.query(f"unique_id == '{unique_id}'")["ds"].max()
-            print(f"Unique_id: {unique_id}, min_date: {min_date}, max_date: {max_date}")
-
+            
             data_list.append(
                 {
                     "title": f"{unique_id}", 
@@ -838,7 +837,6 @@ class StatsForecastLab:
                     "actual_res_y": df_train[(df_train["unique_id"] == unique_id) & (df_train["ds"] >= min_date) & (df_train["ds"] <= max_date)]['y']
                 },
             )
-
         n_plots = len(data_list)
         
         if n_plots == 1:
